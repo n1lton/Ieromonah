@@ -24,7 +24,7 @@ class ShopItem(BaseShopItem):
     @staticmethod
     async def func(**kwargs):
         guild = kwargs["member"].guild
-        for roleId in roles:
+        for roleId in roles[1:]: # без агностика
             role = discord.utils.get(guild.roles, id=roleId)
 
             newPerms = role.permissions
