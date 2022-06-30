@@ -9,8 +9,13 @@ async def getTop(sql, title, author: discord.Member, emoji):
     data = db.cur.execute(sql).fetchall()
     top = ""
     for memberId, messages in data:
-        member = await author.guild.fetch_member(memberId)
-        top += f"""{member.nick if member.nick else member.name}  -  **{messages}**  {emoji}\n\n"""
+        try:
+            member = await author.guild.fetch_member(memberId)
+            name = member.nick if member.nick else member.name
+        except:
+            name = memberId
+
+        top += f"""**{name}**  -  __{messages}__  {emoji}\n\n"""
         
     return discord.Embed(
         title=title,

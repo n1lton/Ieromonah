@@ -16,7 +16,7 @@ async def command(ctx):
     level = db.cur.execute(f"SELECT level FROM users WHERE id = {ctx.author.id}").fetchone()[0]
 
     if randint(0, 100) < chances[level]:
-        win = 5 * randint(2, 10)
+        win = randint(5, 30)
         plusMoney(ctx.author.id, win)
         msg=f"Легейнда, ти намайнил {win} <:gaycoin:955537976467808306>\nШансы на успех были {chances[level]}%"
 
