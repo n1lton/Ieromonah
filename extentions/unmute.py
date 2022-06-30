@@ -12,6 +12,13 @@ async def command(ctx, member: discord.Member):
             embed=showError("Нет прав"),
             ephemeral=True
     )
+    
+    if member.bot:
+        await ctx.respond(
+            embed=showError("Низя мутить и анмутить ботов"),
+            ephemeral=True
+        )
+        return
 
 
     role = discord.utils.get(member.guild.roles, id=otherRoles["mute"])

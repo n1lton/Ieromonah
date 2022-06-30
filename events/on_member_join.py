@@ -11,29 +11,27 @@ def setup(bot: commands.Bot):
         if member.bot:
             return
         
-        
-        db.cur.execute(f"SELECT id FROM users WHERE id = {member.id}")
-        if db.cur.fetchone():
-            level, mute = db.cur.execute(
-                f"SELECT level, mute FROM users WHERE id = {member.id}"
-            ).fetchone()[0]
+        data = db.cur.execute(f"SELECT level, mute FROM users WHERE id = {member.id}").fetchone()
+        if data:
+            level, mute = tuple(data)
+            rolesToAdd = []
 
-            role = discord.utils.get(
-                member.guild.roles,
-                id=roles[level]
-            )
-            roles.append(discord.utils.get(
+            rolesToAdd.append(discord.utils.get(
                 member.guild.roles,
                 id=roles[level]
             ))
 
             if mute:
-                roles.append(discord.utils.get(
+                rolesToAdd.append(discord.utils.get(
                 member.guild.roles,
                 id=otherRoles["mute"]
             ))
 
-            await member.add_roles()
+            await member.add_roles(*rolesToAdd)
+
+        else:
+            db.cur.execute("INSERT INTO users (id) VALUES (?)", (member.id,))
+            db.conn.commit()
 
         
 

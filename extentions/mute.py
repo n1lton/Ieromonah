@@ -20,6 +20,14 @@ async def command(ctx, member: discord.Member, time: str = "1h", reason: Optiona
             embed=showError("Нет прав"),
             ephemeral=True
         )
+        return
+
+    if member.bot:
+        await ctx.respond(
+            embed=showError("Низя мутить ботов"),
+            ephemeral=True
+        )
+        return
 
     try: # time parsing
         unixTime = parse(time)
@@ -38,8 +46,8 @@ async def command(ctx, member: discord.Member, time: str = "1h", reason: Optiona
         return
     
     # if member is muted already
-    db.cur.execute(f"SELECT mute FROM users WHERE id = {member.id}") 
-    if db.cur.fetchone()[0] is not None:
+    data = db.cur.execute(f"SELECT mute FROM users WHERE id = {member.id}").fetchone()
+    if data[0] is not None:
         await ctx.respond(
             embed=showError("Участник уже в муте"),
             ephemeral=True

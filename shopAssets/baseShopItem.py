@@ -3,6 +3,8 @@ from database import DataBase
 from config import cfg, roles
 from assets.moneyFunc import plusMoney
 
+db = DataBase()
+
 class BaseShopItem:
     name = None
     description=None
@@ -64,7 +66,6 @@ class BaseShopItem:
 
     async def buy(self, **kwargs):
         member = kwargs.get("member")
-        db = DataBase()
         db.cur.execute(f"SELECT level, money FROM users WHERE id = {member.id}")
         level, money = db.cur.fetchone()
 

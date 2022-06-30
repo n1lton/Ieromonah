@@ -10,22 +10,22 @@ db = DataBase()
 @commands.command(name="перевод")
 async def command(ctx, member: discord.Member, count: int):
     if member == ctx.author:
-        await ctx.reply(embed=showError(ctx, "Дэбил, нельзя перевести деньги самому себе"))
+        await ctx.reply(embed=showError("Дэбил, нельзя перевести деньги самому себе"))
         return
 
     if member.bot:
-        await ctx.reply(embed=showError(ctx, "Дэбил, нельзя перевести деньги боту"))
+        await ctx.reply(embed=showError("Дэбил, нельзя перевести деньги боту"))
         return
 
     if count < 1:
-        await ctx.reply(embed=showError(ctx, "Слишком маленькая сумма"))
+        await ctx.reply(embed=showError("Слишком маленькая сумма"))
         return
 
     db.cur.execute(f"SELECT money FROM users WHERE id = {ctx.author.id}")
     data = db.cur.fetchone()[0]
 
     if count > data:
-        await ctx.reply(embed=showError(ctx, "Слишком большая сумма"))
+        await ctx.reply(embed=showError("Слишком большая сумма"))
         return
 
     plusMoney(ctx.author.id, -count); plusMoney(member.id, count)

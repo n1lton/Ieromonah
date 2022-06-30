@@ -19,8 +19,7 @@ db.cur.execute(
         text TEXT DEFAULT "Этот текст можно изменить командой ы!описание {текст}",
         level INTEGER DEFAULT 0,
         mute INTEGER DEFAULT null
-    )
-"""
+    )"""
 )
 
 

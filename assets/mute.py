@@ -1,5 +1,5 @@
 from database import DataBase
-import discord, asyncio
+import discord, asyncio, json
 from config import cfg, otherRoles
 from time import time as getTime
 
@@ -42,3 +42,22 @@ async def mute(ctx, member: discord.Member, time: int, reason: str = "Не ук�
 
     await asyncio.sleep(time)
     await unmute(member)
+
+
+async def unmuteRoleAfter(role, seconds, mode):
+    await asyncio.sleep(seconds)
+
+    newPerms = role.permissions
+    newPerms.update(send_messages=True)
+    await role.edit(permissions=newPerms)
+
+    with open("cache.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+        
+    if not data[mode]:
+        return
+
+    data[mode] = None
+    with open("cache.json", "w", encoding="utf-8") as f:
+        json.dump(data, f)
+    
