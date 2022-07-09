@@ -69,7 +69,7 @@ class AchivementManager:
                     ach.name,
                     ach.description,
                     ["🥉", "🥈", "🥇"][ach.tier - 1],
-                    True if ach.id in achs else False,
+                    ach.id in achs,
                     ach.id
                 ))
 
