@@ -20,7 +20,7 @@ async def check(member):
 
 sex = Achivement(
     "Лолька в подвале",
-    3,
+    1,
     "Паебаца 1 раз",
     9
 )

@@ -9,6 +9,8 @@ import discord
 manager = AchivementManager()
 
 class View(discord.ui.View):
+    completed = False
+
     def __init__(self, author, member, message):
         super().__init__(timeout=60)
         self.author = author
@@ -24,6 +26,8 @@ class View(discord.ui.View):
 
 
     async def on_timeout(self):
+        if self.completed:
+            return
         embed = discord.Embed(
             title="Секс",
             description=f"{self.member.mention} проигнорил(а) пидарас сцуко 🐔",
@@ -45,6 +49,7 @@ class View(discord.ui.View):
         
         await manager.check(self.author, 9)
         await manager.check(self.member, 9)
+        self.completed = True
 
 
     @discord.ui.button(label="Нит", style=discord.ButtonStyle.red, emoji="🐔")
@@ -56,6 +61,7 @@ class View(discord.ui.View):
         ).set_image(url="https://cdn.discordapp.com/attachments/976915046808580139/994936174990868480/file.gif")
 
         await interaction.message.edit(embed=embed, view=None)
+        self.completed = True
 
 
 @commands.command(name="секс")
