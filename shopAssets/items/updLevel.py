@@ -23,10 +23,10 @@ class ShopItem(BaseShopItem):
 
     @staticmethod
     async def func(**kwargs):
-        member = kwargs.get("member")
-        db.cur.execute(f"SELECT level FROM users WHERE id = {member.id}")
+        ctx = kwargs.get("ctx")
+        db.cur.execute(f"SELECT level FROM users WHERE id = {ctx.author.id}")
         memberLevel = db.cur.fetchone()[0]
-        await setLevel(member, memberLevel+1)
+        await setLevel(ctx.author, memberLevel+1)
 
     @staticmethod
     async def getPrice(**kwargs):
@@ -34,11 +34,10 @@ class ShopItem(BaseShopItem):
         db.cur.execute(f"SELECT level FROM users WHERE id = {member.id}")
         level = db.cur.fetchone()[0]
 
-        return 100 * (level**2 + 1)
+        if level == len(roles) - 1:
+            return "Нет"
+        return 300 * (level**3 + 1)
         
-
-
-
 
 def setup(shop):
     item = ShopItem()

@@ -28,7 +28,9 @@ async def command(ctx, member: discord.Member, count: int):
         await ctx.reply(embed=showError("Слишком большая сумма"))
         return
 
-    plusMoney(ctx.author.id, -count); plusMoney(member.id, count)
+    await plusMoney(ctx.author, -count)
+    await plusMoney(member, count)
+    
     embed = discord.Embed(
         title="Перевод",
         description=f"{ctx.author.mention} перевёл {count} <:gaycoin:955537976467808306> {member.mention}",

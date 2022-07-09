@@ -13,6 +13,7 @@ async def command(ctx: commands.Context, member: discord.Member, level: int):
         )
         return
 
+
     if 0 > level or level >= len(roles):
         await ctx.respond(
             embed=showError(f"Некорректный уровень (мин 0, макс {len(roles)-1})"),

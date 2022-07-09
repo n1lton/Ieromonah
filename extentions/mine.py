@@ -17,7 +17,7 @@ async def command(ctx):
 
     if randint(0, 100) < chances[level]:
         win = randint(5, 30)
-        plusMoney(ctx.author.id, win)
+        await plusMoney(ctx.author, win)
         msg=f"Легейнда, ти намайнил {win} <:gaycoin:955537976467808306>\nШансы на успех были {chances[level]}%"
 
     else:

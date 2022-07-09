@@ -31,12 +31,15 @@ async def command(ctx, member: discord.Member, time: str = "1h", reason: Optiona
 
     try: # time parsing
         unixTime = parse(time)
+        if not unixTime:
+            raise ValueError()
     except:
         await ctx.respond(
             embed=showError("Неправильный формат времени"),
             ephemeral=True
         )
         return
+
 
     if unixTime > 60*60*24*6: # 6 month
         await ctx.respond(

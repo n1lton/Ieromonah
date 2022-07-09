@@ -3,6 +3,10 @@ import discord
 from typing import Optional
 from config import cfg, roles
 from database import DataBase
+from achivements.achivementManager import AchivementManager
+
+manager = AchivementManager()
+db = DataBase()
 
 @commands.command(name="профиль")
 async def command(ctx: commands.Context, member: Optional[discord.Member]):
@@ -19,16 +23,20 @@ async def command(ctx: commands.Context, member: Optional[discord.Member]):
             description="Это бот :) У него нет профиля.",
             color=cfg["color"]
         )
+
     else:
-        db = DataBase()
         db.cur.execute(f"SELECT money, messages, text, level FROM users WHERE id = {member.id}")
         data = db.cur.fetchone()
+
         embed = discord.Embed(
             title=f"Профиль {member.nick if member.nick else member.name}",
             description = data[2],
             color=cfg["color"]
-        )
-        embed.add_field(
+        ).add_field(
+            name="Достижения",
+            value=manager.getMemberAchivements(member),
+            inline=False
+        ).add_field(
             name="Гейкойны",
             value=f"{data[0]}  <:gaycoin:955537976467808306>"
         ).add_field(
@@ -36,12 +44,11 @@ async def command(ctx: commands.Context, member: Optional[discord.Member]):
             value=data[1]
         ).add_field(
             name="Роль",
-            value=f"{discord.utils.get(member.guild.roles, id=roles[data[3]]).name} / ☦🛐ПОЛУБОГ🛐☦\n({data[3]} / 5)",
+            value=f"{discord.utils.get(member.guild.roles, id=roles[data[3]]).name} из ☦🛐ПОЛУБОГ🛐☦\n({data[3]} / 5)",
             inline=False
         ).add_field(
             name="Id",
             value=member.id,
-
         )
 
         if member.avatar: embed.set_thumbnail(url=member.avatar.url)

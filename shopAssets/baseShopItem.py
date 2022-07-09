@@ -71,18 +71,17 @@ class BaseShopItem:
 
         checkResult = await self.check(**kwargs)
 
+        if checkResult:
+            desc = checkResult
 
-        if level < self.accessLevel:
+        elif level < self.accessLevel:
             desc = "Ошибка: неподходящая роль"
 
         elif money < self.price:
             desc = "Ошибка: недостаточно средств"
 
-        elif checkResult:
-            desc = checkResult
-
         else:
-            plusMoney(member.id, -self.price)
+            await plusMoney(member, -self.price)
             await self.func(**kwargs)
             desc = "Успешно"
 

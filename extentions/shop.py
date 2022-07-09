@@ -7,7 +7,6 @@ from assets.role import setLevel
 
 
 shop = Shop()
-shop.loadItems()
 
 
 @commands.slash_command(name="магазин", description="В магазине можно купить повышение роли, размут и т.д.")

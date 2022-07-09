@@ -4,8 +4,10 @@ from config import cfg, roles, adminRoles
 from time import time as getTime
 from assets.mute import unmute, unmuteRoleAfter
 import discord, asyncio, json
+from achivements.achivementManager import AchivementManager
 
 db = DataBase()
+manager = AchivementManager()
 
 
 async def unmuteAfter(member, sec):
@@ -50,17 +52,23 @@ async def on_ready():
 
         print(member)
 
+        # stats check
+        data = db.cur.execute(f"SELECT id FROM stats WHERE id = {member.id}").fetchone()
+        if not data:
+            db.cur.execute("INSERT INTO stats (id) VALUES (?)", (member.id,))
+            db.conn.commit()
+
+        # main table check
         db.cur.execute(f"SELECT mute FROM users WHERE id = {member.id}")
         data = db.cur.fetchone()
         # data = '(None,)' or '(27349824792479,)' if member in database
         # and 'None' if not
-
         if not data:
             memberLevel = 0
 
             for role in member.roles:
                 if role.id in adminRoles:
-                    memberLevel = 6
+                    memberLevel = 5
                     break
 
                 if role.id in roles and roles.index(role.id) > memberLevel:
@@ -70,13 +78,17 @@ async def on_ready():
             db.conn.commit()
 
 
-        elif data[0]: # if member is muted
-            unixTime = data[0]
-            if unixTime - getTime() > 0:
-                asyncio.create_task(unmuteAfter(member, unixTime - getTime()))
+        else:
+            await manager.check(member, 3)
 
-            else:
-                await unmute(member)
+            if data[0]: # if member is muted
+                unixTime = data[0]
+                if unixTime - getTime() > 0:
+                    asyncio.create_task(unmuteAfter(member, unixTime - getTime()))
+
+                else:
+                    await unmute(member)
+        
 
 
 def setup(bot: commands.Bot):

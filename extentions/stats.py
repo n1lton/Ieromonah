@@ -8,6 +8,7 @@ db = DataBase()
 async def getTop(sql, title, author: discord.Member, emoji):
     data = db.cur.execute(sql).fetchall()
     top = ""
+    i = 1
     for memberId, messages in data:
         try:
             member = await author.guild.fetch_member(memberId)
@@ -15,7 +16,8 @@ async def getTop(sql, title, author: discord.Member, emoji):
         except:
             name = memberId
 
-        top += f"""**{name}**  -  __{messages}__  {emoji}\n\n"""
+        top += f"""{i}) **{name}**  -  __{messages}__  {emoji}\n\n"""
+        i += 1
         
     return discord.Embed(
         title=title,

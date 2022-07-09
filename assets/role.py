@@ -1,16 +1,21 @@
 import discord
 from config import roles
 from database import DataBase
+from achivements.achivementManager import AchivementManager
 
-async def setLevel(member: discord.Member, level: int):
+manager = AchivementManager()
+db = DataBase()
+
+
+async def setLevel(member, level: int):
     if level is not None and (level >= len(roles) or level < 0):
         raise ValueError("Too low/big level value")
 
-    db = DataBase()
-    db.cur.execute(f"SELECT level FROM users WHERE id = {member.id}")
-    data = db.cur.fetchone()
+
     db.cur.execute("UPDATE users SET level = ? WHERE id = ?", (level, member.id))
     db.conn.commit()
+
+    await manager.check(member, 3)
 
     newRole = discord.utils.get(member.guild.roles, id=roles[level])
     oldRoles = []
