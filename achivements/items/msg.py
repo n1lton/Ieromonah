@@ -22,7 +22,7 @@ async def check(member: discord.Member):
 
 # 1000 сообщений
 ach1000 = Achivement(
-    "10000 Сообщений",
+    "1000 Сообщений",
     2,
     "Написать 1000 сообщений ✉️",
     1
