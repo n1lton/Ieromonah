@@ -31,7 +31,7 @@ ach1000 = Achivement(
 @ach1000.setCheck
 async def check(member: discord.Member):
     messages = db.cur.execute(f"SELECT messages FROM users WHERE id = {member.id}").fetchone()[0]
-    if messages >= 10000:
+    if messages >= 1000:
         return True
 
 
