@@ -41,7 +41,7 @@ async def command(ctx, member: discord.Member, time: str = "1h", reason: Optiona
         return
 
 
-    if unixTime > 60*60*24*6: # 6 month
+    if unixTime > 60*60*24*30*6: # 6 month
         await ctx.respond(
             embed=showError("Слишком большое время мута"),
             ephemeral=True
