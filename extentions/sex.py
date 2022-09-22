@@ -80,9 +80,11 @@ async def command(ctx: commands.Context, member: Optional[discord.Member]):
 
     if member == ctx.author:
         await ctx.reply(
-            embed=showError(
-                "Додикп, ты сам с собой трахаца решил? Неправославно это"
-            )
+            embed=discord.Embed(
+                    title="Секс",
+                    description=f"грешник {ctx.author.mention} опять рукоблудит 🐷",
+                    color=cfg["color"]
+            ).set_image(url="https://media.discordapp.net/attachments/765783278716059672/890647894619750420/pig.gif")
         )
         return
 
@@ -105,7 +107,5 @@ async def command(ctx: commands.Context, member: Optional[discord.Member]):
     await message.edit(view=View(ctx.author, member, message))
 
     
-
-
 def setup(bot: commands.Bot):
     bot.add_command(command)
