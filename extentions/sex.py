@@ -72,18 +72,10 @@ async def command(ctx: commands.Context, member: Optional[discord.Member]):
 
     elif member is None:
         await ctx.reply(
-            embed=showError(
-                "Додикп, если команда ы!секс не является ответом на сообщение, то укажи участника"
-            )
-        )
-        return
-
-    if member == ctx.author:
-        await ctx.reply(
             embed=discord.Embed(
-                    title="Секс",
-                    description=f"грешник {ctx.author.mention} опять рукоблудит 🐷",
-                    color=cfg["color"]
+                title="Секс",
+                description=f"грешник {ctx.author.mention} опять рукоблудит 🐷",
+                color=cfg["color"]
             ).set_image(url="https://media.discordapp.net/attachments/765783278716059672/890647894619750420/pig.gif")
         )
         return
