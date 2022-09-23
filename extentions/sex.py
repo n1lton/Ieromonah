@@ -70,7 +70,7 @@ async def command(ctx: commands.Context, member: Optional[discord.Member]):
         msg = await ctx.channel.fetch_message(ctx.message.reference.message_id)
         member = msg.author
 
-    elif member is None:
+    elif member is None or member == ctx.author:
         await ctx.reply(
             embed=discord.Embed(
                 title="Секс",
